@@ -2,7 +2,7 @@
 
 namespace myEnergiConnect;
 
-public interface IClient
+public interface IMyEnergiClient
 {
     Task<Model.Zappi.AllZappiSummary> GetZappiSummary();
     Task<Model.Eddi.AllEddiSummary> GetEddiSummary();

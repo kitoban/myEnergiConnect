@@ -30,7 +30,7 @@ public class ManualConnectionTests
     [Explicit("Manual Connection test")]
     public async Task CanConnectToZappi()
     {
-        var client = new Client(_serialNumber, _apiKey);
+        var client = new MyEnergiMyEnergiClient(_serialNumber, _apiKey);
 
         var zappiSummary = await client.GetZappiSummary();
 
@@ -41,7 +41,7 @@ public class ManualConnectionTests
     [Explicit("Manual Connection test")]
     public async Task CanConnectToEddi()
     {
-        var client = new Client(_serialNumber, _apiKey);
+        var client = new MyEnergiMyEnergiClient(_serialNumber, _apiKey);
 
         var eddiSummary = await client.GetEddiSummary();
 
@@ -52,7 +52,7 @@ public class ManualConnectionTests
     [Explicit("Manual Connection test")]
     public async Task CanGetZappiHistory()
     {
-        var client = new Client(_serialNumber, _apiKey);
+        var client = new MyEnergiMyEnergiClient(_serialNumber, _apiKey);
         var zappiSummary = await client.GetZappiSummary();
         var serialNumber = zappiSummary.Zappis.First().SerialNumber;
 
@@ -67,7 +67,7 @@ public class ManualConnectionTests
     [Explicit("Manual Connection test")]
     public async Task CanGetEddiHistory()
     {
-        var client = new Client(_serialNumber, _apiKey);
+        var client = new MyEnergiMyEnergiClient(_serialNumber, _apiKey);
         var eddiHistory = await client.GetEddiSummary();
         var serialNumber = eddiHistory.Eiddis.First().SerialNumber;
 

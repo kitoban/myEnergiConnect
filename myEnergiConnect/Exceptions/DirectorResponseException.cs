@@ -1,4 +1,4 @@
-﻿namespace myEnergiConnect.Excepetions;
+﻿namespace myEnergiConnect.Exceptions;
 
 public class DirectorResponseException : Exception
 {
