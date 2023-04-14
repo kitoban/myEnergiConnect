@@ -4,6 +4,7 @@ namespace myEnergiConnect;
 
 /// <summary>
 /// Custom factory to generate HttpClient and handler to use digest authentication and a continuous stream
+/// https://stackoverflow.com/questions/52223522/httpclienthandler-rfc-7616-digest-authentication-header-using-wrong-uri
 /// </summary>
 internal class DigestHttpFactory : Flurl.Http.Configuration.DefaultHttpClientFactory
 {
@@ -34,7 +35,6 @@ internal class DigestHttpFactory : Flurl.Http.Configuration.DefaultHttpClientFac
         {
             Credentials = CredCache.GetCredential(new Uri(Url), "Digest")
         };
-
 
         return handler;
     }

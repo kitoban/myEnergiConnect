@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Flurl;
 using Flurl.Http;
-using myEnergiConnect.Excepetions;
+using myEnergiConnect.Exceptions;
 using myEnergiConnect.Model.Shared;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -9,13 +9,13 @@ using Newtonsoft.Json.Linq;
 
 namespace myEnergiConnect;
 
-public class Client : IClient
+public class MyEnergiMyEnergiClient : IMyEnergiClient
 {
     private Url? _serverAddress = null;
     private readonly string _hubSerialNo;
     private readonly string _apiKey;
 
-    public Client(string hubSerialNo, string apiKey)
+    public MyEnergiMyEnergiClient(string hubSerialNo, string apiKey)
     {
         _apiKey = apiKey;
         _hubSerialNo = hubSerialNo;
