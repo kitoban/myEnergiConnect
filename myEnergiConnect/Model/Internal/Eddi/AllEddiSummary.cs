@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myEnergiConnect.Model.Eddi;
+namespace MyEnergiConnect.Model.Internal.Eddi;
 
 public record AllEddiSummary(
     [property:JsonProperty("eddi")] EddiSummary[] Eiddis);

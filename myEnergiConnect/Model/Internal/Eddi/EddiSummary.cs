@@ -1,7 +1,7 @@
-﻿using myEnergiConnect.Model.Shared;
+﻿using MyEnergiConnect.Model.Internal.Shared;
 using Newtonsoft.Json;
 
-namespace myEnergiConnect.Model.Eddi;
+namespace MyEnergiConnect.Model.Internal.Eddi;
 
 public record EddiSummary(
     [property:JsonProperty("bsm")] int BoostMode,

@@ -1,6 +1,6 @@
-﻿namespace myEnergiConnect.Exceptions;
+﻿namespace MyEnergiConnect.Exceptions;
 
-public class DirectorResponseException : Exception
+public class DirectorResponseException : MyEnergiConnectException
 {
     public int StatusCode { get; }
 
