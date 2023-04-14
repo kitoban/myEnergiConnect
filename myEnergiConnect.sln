@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myEnergiConnect", "myEnergiConnect\myEnergiConnect.csproj", "{0D4F519A-87AE-4D80-95C3-6D8E8A642A47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myEnergiConnect.Test", "myEnergiConnect.Test\myEnergiConnect.Test.csproj", "{A25BD28D-1C83-4274-A62C-45ECBF507FBC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D4F519A-87AE-4D80-95C3-6D8E8A642A47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D4F519A-87AE-4D80-95C3-6D8E8A642A47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D4F519A-87AE-4D80-95C3-6D8E8A642A47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D4F519A-87AE-4D80-95C3-6D8E8A642A47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A25BD28D-1C83-4274-A62C-45ECBF507FBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A25BD28D-1C83-4274-A62C-45ECBF507FBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A25BD28D-1C83-4274-A62C-45ECBF507FBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A25BD28D-1C83-4274-A62C-45ECBF507FBC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
