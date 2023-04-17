@@ -1,6 +1,7 @@
 ﻿using Flurl.Http;
+using MyEnergiConnect;
 
-namespace MyEnergiConnect;
+namespace myEnergiConnect.Extensions;
 
 internal static class FlurlExtensions
 {
