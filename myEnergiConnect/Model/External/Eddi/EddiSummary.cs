@@ -20,5 +20,6 @@ public record EddiSummary(
     string Heater1Name,
     string Heater2Name,
     int ActiveHeater,
-    int Priority)
+    int Priority,
+    double TotalTransferred)
     : IMyEnergiProductWithCt;
