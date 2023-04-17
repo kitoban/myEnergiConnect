@@ -7,9 +7,14 @@ internal static class NumberExtensions
         return value / 1000d;
     }
     
-    public static double FromKiloWattToWatt(this double value)
+    public static double FromKiloWattHourToWattMinutes(this double value)
     {
-        return value * 1000d;
+        return value * 60_000d;
+    }
+    
+    public static double FromKiloWattHourToWattSeconds(this double value)
+    {
+        return value * 3_600_000d;
     }
     
     public static double FromWattSecondToToWattMinute(this int value)

@@ -34,10 +34,10 @@ public class MyEnergiClient : IMyEnergiClient
         _eddiSummaries = new Dictionary<int, RawEddiSummary>();
     }
 
-    public async Task<ZappiSumary[]> GetZappiSummaries(PowerUnits unit = PowerUnits.Watt)
+    public async Task<ZappiSumary[]> GetZappiSummaries(PowerUnits powerUnit = PowerUnits.Watt, EnergyUnit energyUnit = EnergyUnit.KiloWattHour)
     {
         var allZappiSummary = await GetAllZappiSummariesInternal();
-        return allZappiSummary.Zappis.Select(rawData => ConvertZappiSummary(rawData, unit)).ToArray();
+        return allZappiSummary.Zappis.Select(rawData => ConvertZappiSummary(rawData, powerUnit, energyUnit)).ToArray();
     }
 
     private async Task<AllZappiSummary> GetAllZappiSummariesInternal()
@@ -48,10 +48,10 @@ public class MyEnergiClient : IMyEnergiClient
             .GetJsonAsync<AllZappiSummary>();
     }
 
-    public async Task<EddiSummary[]> GetEddiSummaries(PowerUnits unit = PowerUnits.Watt)
+    public async Task<EddiSummary[]> GetEddiSummaries(PowerUnits powerUnit = PowerUnits.Watt, EnergyUnit energyUnit = EnergyUnit.KiloWattHour)
     {
         var allEddiSummary = await GetAllEddiSummariesInternal();
-        return allEddiSummary.Eiddis.Select(rawData => ConvertEddiSummary(rawData, unit)).ToArray();
+        return allEddiSummary.Eiddis.Select(rawData => ConvertEddiSummary(rawData, powerUnit, energyUnit)).ToArray();
     }
 
     private async Task<AllEddiSummary> GetAllEddiSummariesInternal()
@@ -63,7 +63,7 @@ public class MyEnergiClient : IMyEnergiClient
         return allEddiSummary;
     }
 
-    private EddiSummary ConvertEddiSummary(RawEddiSummary rawData, PowerUnits unit)
+    private EddiSummary ConvertEddiSummary(RawEddiSummary rawData, PowerUnits unit, EnergyUnit energyUnit)
     {
         return new EddiSummary(
             rawData.SerialNumber,
@@ -85,32 +85,32 @@ public class MyEnergiClient : IMyEnergiClient
             rawData.Priority);
     }
 
-    private ZappiSumary ConvertZappiSummary(RawZappiSummary rawData, PowerUnits unit)
+    private ZappiSumary ConvertZappiSummary(RawZappiSummary rawData, PowerUnits powerUnit, EnergyUnit energyUnit)
     {
         return new ZappiSumary(
             rawData.SerialNumber,
             rawData.Ct1Name,
             rawData.Ct2Name,
             rawData.Ct3Name,
-            ConvertFromWatt(rawData.PhysicalCt1ValueWatts, unit),
-            ConvertFromWatt(rawData.PhysicalCt2ValueWatts, unit),
-            ConvertFromWatt(rawData.PhysicalCt3ValueWatts, unit),
-            ConvertFromWatt(rawData.GeneratedWatts, unit),
-            ConvertFromWatt(rawData.WattsFromGrid, unit),
-            ConvertFromWatt(rawData.DiversionAmountWatts, unit),
+            ConvertFromWatt(rawData.PhysicalCt1ValueWatts, powerUnit),
+            ConvertFromWatt(rawData.PhysicalCt2ValueWatts, powerUnit),
+            ConvertFromWatt(rawData.PhysicalCt3ValueWatts, powerUnit),
+            ConvertFromWatt(rawData.GeneratedWatts, powerUnit),
+            ConvertFromWatt(rawData.WattsFromGrid, powerUnit),
+            ConvertFromWatt(rawData.DiversionAmountWatts, powerUnit),
             rawData.Priority,
             rawData.UnitStatus,
-            ConvertFromKilowatt(rawData.ChargeAddedKWh, unit),
+            ConvertFromKilowattHour(rawData.ChargeAddedKWh, energyUnit),
             rawData.BoostSmart,
             rawData.LockStatus,
             rawData.PlugStatus,
             rawData.Mode,
             rawData.MinimumGreenLevel,
             rawData.SmartBoostStartTimeHour,
-            ConvertFromKilowatt(rawData.SmartBoostKWhToAdd, unit),
+            ConvertFromKilowattHour(rawData.SmartBoostKWhToAdd, energyUnit),
             rawData.SmartBoostStartTimeMinute,
             rawData.BoostHour,
-            ConvertFromKilowatt(rawData.BoostKWh, unit),
+            ConvertFromKilowattHour(rawData.BoostKWh, energyUnit),
             rawData.BoostMinute);
     }
 
@@ -124,12 +124,13 @@ public class MyEnergiClient : IMyEnergiClient
         };
     }
     
-    private double ConvertFromKilowatt(double value, PowerUnits unit)
+    private double ConvertFromKilowattHour(double value, EnergyUnit unit)
     {
         return unit switch
         {
-            PowerUnits.Watt => value.FromKiloWattToWatt(),
-            PowerUnits.KiloWatt => value,
+            EnergyUnit.WattMinute => value.FromKiloWattHourToWattMinutes(),
+            EnergyUnit.WattSecond => value.FromKiloWattHourToWattSeconds(),
+            EnergyUnit.KiloWattHour => value,
             _ => throw new ArgumentOutOfRangeException(nameof(unit), unit, null)
         };
     }
