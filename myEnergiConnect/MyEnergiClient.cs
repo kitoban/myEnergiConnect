@@ -67,6 +67,7 @@ public class MyEnergiClient : IMyEnergiClient
     {
         return new EddiSummary(
             rawData.SerialNumber,
+            DateTime.Parse($"{rawData.Date} {rawData.Time}"), 
             rawData.Ct1Name,
             rawData.Ct2Name,
             rawData.Ct3Name,
@@ -90,6 +91,7 @@ public class MyEnergiClient : IMyEnergiClient
     {
         return new ZappiSumary(
             rawData.SerialNumber,
+            DateTime.Parse($"{rawData.Date} {rawData.Time}"), 
             rawData.Ct1Name,
             rawData.Ct2Name,
             rawData.Ct3Name,
@@ -102,6 +104,8 @@ public class MyEnergiClient : IMyEnergiClient
             rawData.Priority,
             rawData.UnitStatus,
             ConvertFromKilowattHour(rawData.ChargeAddedKWh, energyUnit),
+            rawData.BoostManual,
+            rawData.BoostTimed,
             rawData.BoostSmart,
             rawData.LockStatus,
             rawData.PlugStatus,
@@ -115,7 +119,7 @@ public class MyEnergiClient : IMyEnergiClient
             rawData.BoostMinute);
     }
 
-    private double ConvertFromWatt(int value, PowerUnits unit)
+    private decimal ConvertFromWatt(int value, PowerUnits unit)
     {
         return unit switch
         {
@@ -125,7 +129,7 @@ public class MyEnergiClient : IMyEnergiClient
         };
     }
     
-    private double ConvertFromKilowattHour(double value, EnergyUnit unit)
+    private decimal ConvertFromKilowattHour(decimal value, EnergyUnit unit)
     {
         return unit switch
         {
@@ -171,7 +175,7 @@ public class MyEnergiClient : IMyEnergiClient
             HandleUnitConversion(ct3WattSeconds, energyUnit));
     }
 
-    private double HandleUnitConversion(int value, EnergyUnit unit)
+    private decimal HandleUnitConversion(int value, EnergyUnit unit)
     {
         return unit switch
         {
