@@ -18,6 +18,7 @@ public class MyEnergiClient : IMyEnergiClient
     private readonly string _hubSerialNo;
     private readonly string _apiKey;
     private Dictionary<int, ZappiSummary> _zappiSummaries;
+    private Dictionary<int, EddiSummary> _eddiSummaries;
 
     public MyEnergiClient(string hubSerialNo, string apiKey)
     {
@@ -25,6 +26,7 @@ public class MyEnergiClient : IMyEnergiClient
         _hubSerialNo = hubSerialNo;
 
         _zappiSummaries = new Dictionary<int, ZappiSummary>();
+        _eddiSummaries = new Dictionary<int, EddiSummary>();
     }
 
     public async Task<AllZappiSummary> GetZappiSummaries()
@@ -43,7 +45,7 @@ public class MyEnergiClient : IMyEnergiClient
             .GetJsonAsync<AllEddiSummary>();
     }
 
-    public async Task<HistoricDay> GetZappiHistory(int serialNo, int year, int month, int day, FlowUnit flowUnit = FlowUnit.JouleSeconds)
+    public async Task<HistoricDay> GetZappiHistory(int serialNo, int year, int month, int day, FlowUnit flowUnit = FlowUnit.Watt)
     {
         var zappi = await GetZappiSummary(serialNo);
         var url = await ResolveServerAddress($"cgi-jday-Z{serialNo}-{year}-{month}-{day}");
@@ -68,12 +70,12 @@ public class MyEnergiClient : IMyEnergiClient
         var ct2Joules = mh.PositiveEnergyCt2 + (0 - mh.NegativeEnergyCt2);
         var ct3Joules = mh.PositiveEnergyCt3 + (0 - mh.NegativeEnergyCt3);
 
-        var wattConversion = 60d;
-        var kiloWattConversion = 60000d;
+        var wattMinuteConversion = 60d;
+        var kiloWattHourConversion = 3_600_000d;
         
         return flowUnit switch
         {
-            FlowUnit.JouleSeconds => new HistoricMinute(
+            FlowUnit.Watt => new HistoricMinute(
                 dateTime,
                 gridJoules, 
                 zappiJoules,
@@ -82,23 +84,23 @@ public class MyEnergiClient : IMyEnergiClient
                 ct2Joules, 
                 ct3Joules),
             
-            FlowUnit.Watt => new HistoricMinute(
+            FlowUnit.WattMinute => new HistoricMinute(
                 dateTime, 
-                gridJoules/wattConversion, 
-                zappiJoules/wattConversion,
-                genJoules/wattConversion, 
-                ct1Joules/wattConversion, 
-                ct2Joules/wattConversion, 
-                ct3Joules/wattConversion),
+                gridJoules/wattMinuteConversion, 
+                zappiJoules/wattMinuteConversion,
+                genJoules/wattMinuteConversion, 
+                ct1Joules/wattMinuteConversion, 
+                ct2Joules/wattMinuteConversion, 
+                ct3Joules/wattMinuteConversion),
             
-            FlowUnit.KiloWatt => new HistoricMinute(
+            FlowUnit.KiloWattHour => new HistoricMinute(
                 dateTime, 
-                gridJoules/kiloWattConversion, 
-                zappiJoules/kiloWattConversion,
-                genJoules/kiloWattConversion, 
-                ct1Joules/kiloWattConversion, 
-                ct2Joules/kiloWattConversion, 
-                ct3Joules/kiloWattConversion),
+                gridJoules/kiloWattHourConversion, 
+                zappiJoules/kiloWattHourConversion,
+                genJoules/kiloWattHourConversion, 
+                ct1Joules/kiloWattHourConversion, 
+                ct2Joules/kiloWattHourConversion, 
+                ct3Joules/kiloWattHourConversion),
             
             _ => throw new ArgumentOutOfRangeException(nameof(flowUnit), flowUnit, null)
         };
@@ -138,10 +140,37 @@ public class MyEnergiClient : IMyEnergiClient
         return zappi;
     }
 
-    public async Task<MinuteHistory[]> GetEddiHistory(int serialNo, int year, int month, int day)
+    private async Task<EddiSummary?> GetEddiSummary(int serialNo)
     {
+        if (!_eddiSummaries.ContainsKey(serialNo))
+        {
+            var allEddiSummaries = await GetEddiSummaries();
+            foreach (var e in allEddiSummaries.Eiddis)
+            {
+                _eddiSummaries.Add(e.SerialNumber, e);
+            }
+        }
+
+        if (!_eddiSummaries.TryGetValue(serialNo, out var eddi))
+        {
+            throw new ItemNotFoundException(serialNo, MyEnergiProduct.Eddi);
+        }
+
+        return eddi;
+    }
+
+    public async Task<HistoricDay> GetEddiHistory(int serialNo, int year, int month, int day, FlowUnit flowUnit)
+    {
+        var eddi = await GetEddiSummary(serialNo);
         var url = await ResolveServerAddress($"cgi-jday-E{serialNo}-{year}-{month}-{day}");
-        return await GetDayData(serialNo, url);
+        var history = await GetDayData(serialNo, url);
+        
+        return new HistoricDay(
+            eddi.Ct2Name,
+            eddi.Ct3Name,
+            "None",
+            flowUnit,
+            history.Select(mh => ConvertHistoricData(mh, flowUnit)).ToArray());
     }
 
     private async Task<string> ResolveServerAddress(string target)
