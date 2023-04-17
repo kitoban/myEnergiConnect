@@ -1,4 +1,4 @@
-﻿namespace MyEnergiConnect;
+﻿namespace myEnergiConnect.Model.External;
 
 public enum MyEnergiProduct
 {

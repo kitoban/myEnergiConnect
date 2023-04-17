@@ -1,4 +1,6 @@
-﻿namespace MyEnergiConnect.Exceptions;
+﻿using myEnergiConnect.Model.External;
+
+namespace MyEnergiConnect.Exceptions;
 
 public class ItemNotFoundException : MyEnergiConnectException
 {

@@ -2,6 +2,8 @@
 using Flurl;
 using Flurl.Http;
 using MyEnergiConnect.Exceptions;
+using myEnergiConnect.Extensions;
+using myEnergiConnect.Model.External;
 using MyEnergiConnect.Model.External.Shared;
 using MyEnergiConnect.Model.Internal.Eddi;
 using MyEnergiConnect.Model.Internal.Shared;
@@ -45,7 +47,7 @@ public class MyEnergiClient : IMyEnergiClient
             .GetJsonAsync<AllEddiSummary>();
     }
 
-    public async Task<HistoricDay> GetZappiHistory(int serialNo, int year, int month, int day, FlowUnit flowUnit = FlowUnit.Watt)
+    public async Task<HistoricDay> GetZappiHistory(int serialNo, int year, int month, int day, EnergyUnit energyUnit = EnergyUnit.WattSecond)
     {
         var zappi = await GetZappiSummary(serialNo);
         var url = await ResolveServerAddress($"cgi-jday-Z{serialNo}-{year}-{month}-{day}");
@@ -55,11 +57,11 @@ public class MyEnergiClient : IMyEnergiClient
             zappi.Ct2Name,
             zappi.Ct3Name,
             zappi.Ct4Name,
-            flowUnit,
-            history.Select(mh => ConvertHistoricData(mh, flowUnit)).ToArray());
+            energyUnit,
+            history.Select(mh => ConvertHistoricData(mh, energyUnit)).ToArray());
     }
 
-    private HistoricMinute ConvertHistoricData(MinuteHistory mh, FlowUnit flowUnit)
+    private HistoricMinute ConvertHistoricData(MinuteHistory mh, EnergyUnit energyUnit)
     {
         var dateTime = DateTime.Parse($"{mh.Year}-{mh.Month:D2}-{mh.DayOfMonth:D2}T{mh.Hour:D2}:{mh.Minute:D2}:00Z");
 
@@ -73,9 +75,9 @@ public class MyEnergiClient : IMyEnergiClient
         var wattMinuteConversion = 60d;
         var kiloWattHourConversion = 3_600_000d;
         
-        return flowUnit switch
+        return energyUnit switch
         {
-            FlowUnit.Watt => new HistoricMinute(
+            EnergyUnit.WattSecond => new HistoricMinute(
                 dateTime,
                 gridJoules, 
                 zappiJoules,
@@ -84,7 +86,7 @@ public class MyEnergiClient : IMyEnergiClient
                 ct2Joules, 
                 ct3Joules),
             
-            FlowUnit.WattMinute => new HistoricMinute(
+            EnergyUnit.WattMinute => new HistoricMinute(
                 dateTime, 
                 gridJoules/wattMinuteConversion, 
                 zappiJoules/wattMinuteConversion,
@@ -93,7 +95,7 @@ public class MyEnergiClient : IMyEnergiClient
                 ct2Joules/wattMinuteConversion, 
                 ct3Joules/wattMinuteConversion),
             
-            FlowUnit.KiloWattHour => new HistoricMinute(
+            EnergyUnit.KiloWattHour => new HistoricMinute(
                 dateTime, 
                 gridJoules/kiloWattHourConversion, 
                 zappiJoules/kiloWattHourConversion,
@@ -102,7 +104,7 @@ public class MyEnergiClient : IMyEnergiClient
                 ct2Joules/kiloWattHourConversion, 
                 ct3Joules/kiloWattHourConversion),
             
-            _ => throw new ArgumentOutOfRangeException(nameof(flowUnit), flowUnit, null)
+            _ => throw new ArgumentOutOfRangeException(nameof(energyUnit), energyUnit, null)
         };
     }
 
@@ -159,7 +161,7 @@ public class MyEnergiClient : IMyEnergiClient
         return eddi;
     }
 
-    public async Task<HistoricDay> GetEddiHistory(int serialNo, int year, int month, int day, FlowUnit flowUnit)
+    public async Task<HistoricDay> GetEddiHistory(int serialNo, int year, int month, int day, EnergyUnit energyUnit)
     {
         var eddi = await GetEddiSummary(serialNo);
         var url = await ResolveServerAddress($"cgi-jday-E{serialNo}-{year}-{month}-{day}");
@@ -169,8 +171,8 @@ public class MyEnergiClient : IMyEnergiClient
             eddi.Ct2Name,
             eddi.Ct3Name,
             "None",
-            flowUnit,
-            history.Select(mh => ConvertHistoricData(mh, flowUnit)).ToArray());
+            energyUnit,
+            history.Select(mh => ConvertHistoricData(mh, energyUnit)).ToArray());
     }
 
     private async Task<string> ResolveServerAddress(string target)
