@@ -1,11 +1,9 @@
-﻿using MyEnergiConnect.Model.Internal.Eddi;
-using myEnergiConnect.Model.Internal.Shared;
-using MyEnergiConnect.Model.Internal.Shared;
+﻿using myEnergiConnect.Model.Enums;
 using Newtonsoft.Json;
 
 namespace MyEnergiConnect.Model.Internal.Zappi;
 
-public record ZappiSummary(
+internal record RawZappiSummary(
     [property:JsonProperty("sno")] int SerialNumber,
     [property:JsonProperty("dat")] string Date,
     [property:JsonProperty("tim")] string Time,
@@ -43,9 +41,9 @@ public record ZappiSummary(
     [property:JsonProperty("ectp6")] int PhysicalCt6ValueWatts,
     [property:JsonProperty("mgl")] int MinimumGreenLevel,
     [property:JsonProperty("sbh")] int SmartBoostStartTimeHour,
-    [property:JsonProperty("sbk")] int SmartBoostKWhToAdd,
+    [property:JsonProperty("sbk")] double SmartBoostKWhToAdd,
     [property:JsonProperty("sbm")] int SmartBoostStartTimeMinute,
     [property:JsonProperty("tbh")] int BoostHour,
-    [property:JsonProperty("tbk")] int BoostKWh,
+    [property:JsonProperty("tbk")] double BoostKWh,
     [property:JsonProperty("tbm")] int BoostMinute
-) : IMyEnergiProductWithCt;
+);

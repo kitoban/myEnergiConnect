@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace MyEnergiConnect.Model.External.Shared;
+namespace myEnergiConnect.Model.Enums;
 
 public enum EnergyUnit
 {

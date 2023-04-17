@@ -2,5 +2,5 @@
 
 namespace MyEnergiConnect.Model.Internal.Zappi;
 
-public record AllZappiSummary(
-    [property:JsonProperty("zappi")] ZappiSummary[] Zappis);
+internal record AllZappiSummary(
+    [property:JsonProperty("zappi")] RawZappiSummary[] Zappis);

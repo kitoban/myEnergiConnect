@@ -6,22 +6,22 @@
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
-      <UserSecretsId>5b9480c7-5cfe-4bfc-83b9-dde1fe6ec324</UserSecretsId>
-  </PropertyGroup>
+        <UserSecretsId>5b9480c7-5cfe-4bfc-83b9-dde1fe6ec324</UserSecretsId>
+    </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentAssertions" Version="6.10.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-        <PackageReference Include="NUnit" Version="3.13.3" />
-        <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
-        <PackageReference Include="NUnit.Analyzers" Version="3.3.0" />
-        <PackageReference Include="coverlet.collector" Version="3.1.2" />
+        <PackageReference Include="FluentAssertions" Version="6.10.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0"/>
+        <PackageReference Include="NUnit" Version="3.13.3"/>
+        <PackageReference Include="NUnit3TestAdapter" Version="4.2.1"/>
+        <PackageReference Include="NUnit.Analyzers" Version="3.3.0"/>
+        <PackageReference Include="coverlet.collector" Version="3.1.2"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\myEnergiConnect\myEnergiConnect.csproj" />
+        <ProjectReference Include="..\myEnergiConnect\myEnergiConnect.csproj"/>
     </ItemGroup>
 
 </Project>

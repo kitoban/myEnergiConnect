@@ -1,4 +1,6 @@
-﻿namespace MyEnergiConnect.Model.External.Shared;
+﻿using myEnergiConnect.Model.Enums;
+
+namespace MyEnergiConnect.Model.External.Shared;
 
 public record HistoricDay(
     string Ct1Name,

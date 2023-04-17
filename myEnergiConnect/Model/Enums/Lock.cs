@@ -1,4 +1,4 @@
-﻿namespace MyEnergiConnect.Model.Internal.Zappi;
+﻿namespace myEnergiConnect.Model.Enums;
 
 [Flags]
 public enum Lock

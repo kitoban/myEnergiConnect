@@ -2,5 +2,5 @@
 
 namespace MyEnergiConnect.Model.Internal.Eddi;
 
-public record AllEddiSummary(
-    [property:JsonProperty("eddi")] EddiSummary[] Eiddis);
+internal record AllEddiSummary(
+    [property:JsonProperty("eddi")] RawEddiSummary[] Eiddis);
