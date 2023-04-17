@@ -1,14 +1,11 @@
-﻿using myEnergiConnect.Model;
-using myEnergiConnect.Model.Enums;
-using myEnergiConnect.Model.External.Shared;
-using MyEnergiConnect.Model.Internal.Shared;
+﻿using myEnergiConnect.Model.Enums;
 using Newtonsoft.Json;
 
 namespace MyEnergiConnect.Model.Internal.Eddi;
 
 internal record RawEddiSummary(
     [property: JsonProperty("bsm")] int BoostMode,
-    [property: JsonProperty("che")] double TotalKWhTransferred,
+    [property: JsonProperty("che")] decimal TotalKWhTransferred,
     [property: JsonProperty("cmt")] int CommandTimer,
     [property: JsonProperty("dat")] string Date,
     [property: JsonProperty("div")] int DiversionAmountWatts,
