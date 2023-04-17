@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myEnergiConnect.Model.Eddi;
+namespace MyEnergiConnect.Model.Internal.Eddi;
 
 public record BoostSettings(
     [property:JsonProperty("slt")] int Slot,

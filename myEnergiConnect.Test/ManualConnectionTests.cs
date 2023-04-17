@@ -1,6 +1,7 @@
 using FluentAssertions;
+using MyEnergiConnect.Model.External.Shared;
 
-namespace myEnergiConnect.Test;
+namespace MyEnergiConnect.Test;
 
 using Microsoft.Extensions.Configuration;
 
@@ -30,9 +31,9 @@ public class ManualConnectionTests
     [Explicit("Manual Connection test")]
     public async Task CanConnectToZappi()
     {
-        var client = new MyEnergiMyEnergiClient(_serialNumber, _apiKey);
+        var client = new MyEnergiClient(_serialNumber, _apiKey);
 
-        var zappiSummary = await client.GetZappiSummary();
+        var zappiSummary = await client.GetZappiSummaries();
 
         zappiSummary.Zappis.Should().HaveCountGreaterThan(0);
     }
@@ -41,9 +42,9 @@ public class ManualConnectionTests
     [Explicit("Manual Connection test")]
     public async Task CanConnectToEddi()
     {
-        var client = new MyEnergiMyEnergiClient(_serialNumber, _apiKey);
+        var client = new MyEnergiClient(_serialNumber, _apiKey);
 
-        var eddiSummary = await client.GetEddiSummary();
+        var eddiSummary = await client.GetEddiSummaries();
 
         eddiSummary.Eiddis.Should().HaveCountGreaterThan(0);
     }
@@ -52,23 +53,23 @@ public class ManualConnectionTests
     [Explicit("Manual Connection test")]
     public async Task CanGetZappiHistory()
     {
-        var client = new MyEnergiMyEnergiClient(_serialNumber, _apiKey);
-        var zappiSummary = await client.GetZappiSummary();
+        var client = new MyEnergiClient(_serialNumber, _apiKey);
+        var zappiSummary = await client.GetZappiSummaries();
         var serialNumber = zappiSummary.Zappis.First().SerialNumber;
 
         var now = DateTime.Now;
 
-        var history = await client.GetZappiHistory(serialNumber, now.Year,now.Month, now.Day);
+        var history = await client.GetZappiHistory(serialNumber, now.Year,now.Month, now.Day, FlowUnit.KiloWatt);
 
-        history.Should().HaveCountGreaterThan(0);
+        history.MinuteValue.Should().HaveCountGreaterThan(0);
     }
 
     [Test]
     [Explicit("Manual Connection test")]
     public async Task CanGetEddiHistory()
     {
-        var client = new MyEnergiMyEnergiClient(_serialNumber, _apiKey);
-        var eddiHistory = await client.GetEddiSummary();
+        var client = new MyEnergiClient(_serialNumber, _apiKey);
+        var eddiHistory = await client.GetEddiSummaries();
         var serialNumber = eddiHistory.Eiddis.First().SerialNumber;
 
         var now = DateTime.Now;

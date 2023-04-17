@@ -1,4 +1,4 @@
-﻿namespace myEnergiConnect.Model.Shared;
+﻿namespace MyEnergiConnect.Model.Internal.Shared;
 
 public enum Status
 {

@@ -1,4 +1,4 @@
-﻿namespace myEnergiConnect;
+﻿namespace MyEnergiConnect;
 
 internal static class MyEnergi
 {

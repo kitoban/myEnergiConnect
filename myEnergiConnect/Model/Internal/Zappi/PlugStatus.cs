@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace myEnergiConnect.Model.Zappi;
+namespace MyEnergiConnect.Model.Internal.Zappi;
 
 public enum PlugStatus
 {

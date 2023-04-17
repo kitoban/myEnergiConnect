@@ -1,7 +1,7 @@
-﻿using myEnergiConnect.Model.Shared;
+﻿using MyEnergiConnect.Model.Internal.Shared;
 using Newtonsoft.Json;
 
-namespace myEnergiConnect.Model.Zappi;
+namespace MyEnergiConnect.Model.Internal.Zappi;
 
 public record ZappiSummary(
     [property:JsonProperty("sno")] int SerialNumber,

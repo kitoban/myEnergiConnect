@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace myEnergiConnect;
+namespace MyEnergiConnect;
 
 /// <summary>
 /// Custom factory to generate HttpClient and handler to use digest authentication and a continuous stream

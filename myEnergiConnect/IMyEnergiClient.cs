@@ -1,11 +1,14 @@
-﻿using myEnergiConnect.Model.Shared;
+﻿using MyEnergiConnect.Model.External.Shared;
+using MyEnergiConnect.Model.Internal.Eddi;
+using MyEnergiConnect.Model.Internal.Shared;
+using MyEnergiConnect.Model.Internal.Zappi;
 
-namespace myEnergiConnect;
+namespace MyEnergiConnect;
 
 public interface IMyEnergiClient
 {
-    Task<Model.Zappi.AllZappiSummary> GetZappiSummary();
-    Task<Model.Eddi.AllEddiSummary> GetEddiSummary();
-    Task<MinuteHistory[]> GetZappiHistory(int serialNo, int year, int month, int day);
+    Task<AllZappiSummary> GetZappiSummaries();
+    Task<AllEddiSummary> GetEddiSummaries();
+    Task<HistoricDay> GetZappiHistory(int serialNo, int year, int month, int day, FlowUnit flowUnit = FlowUnit.JouleSeconds);
     Task<MinuteHistory[]> GetEddiHistory(int serialNo, int year, int month, int day);
 }
