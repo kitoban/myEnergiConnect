@@ -4,7 +4,7 @@ namespace MyEnergiConnect.Model.External.Shared;
 
 public enum FlowUnit
 {
-    [EnumMember(Value = "JS")] JouleSeconds,
     [EnumMember(Value = "W")] Watt,
-    [EnumMember(Value = "KW")] KiloWatt
+    [EnumMember(Value = "WM")] WattMinute,
+    [EnumMember(Value = "KWH")] KiloWattHour
 }

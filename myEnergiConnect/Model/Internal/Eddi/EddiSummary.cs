@@ -1,4 +1,5 @@
-﻿using MyEnergiConnect.Model.Internal.Shared;
+﻿using myEnergiConnect.Model.Internal.Shared;
+using MyEnergiConnect.Model.Internal.Shared;
 using Newtonsoft.Json;
 
 namespace MyEnergiConnect.Model.Internal.Eddi;
@@ -10,10 +11,12 @@ public record EddiSummary(
     [property:JsonProperty("dat")] string Date,
     [property:JsonProperty("div")] int DiversionAmountWatts,
     [property:JsonProperty("dst")] int IsDaylightSavingsTimeEnabled,
-    [property:JsonProperty("ectp1")] int CTConnection1Value,
-    [property:JsonProperty("ectp2")] int CTConnection2Value,
-    [property:JsonProperty("ectt1")] string CT1Name,
-    [property:JsonProperty("ectt2")] string CT2Name,
+    [property:JsonProperty("ectp1")] int PhysicalCt1ValueWatts,
+    [property:JsonProperty("ectp2")] int PhysicalCt2ValueWatts,
+    [property:JsonProperty("ectp3")] int PhysicalCt3ValueWatts,
+    [property:JsonProperty("ectt1")] string Ct1Name,
+    [property:JsonProperty("ectt2")] string Ct2Name,
+    [property:JsonProperty("ectt3")] string Ct3Name,
     [property:JsonProperty("frq")] decimal SupplyFrequency,
     [property:JsonProperty("fwv")] string FirmwareVersion,
     [property:JsonProperty("gen")] int GeneratedWatts,
@@ -33,4 +36,4 @@ public record EddiSummary(
     [property:JsonProperty("tp")] int TemperatureProbe1,
     [property:JsonProperty("tp2")] int TemperatureProbe2,
     [property:JsonProperty("vol")] int VoltageOut
-);
+) : IMyEnergiProduct;

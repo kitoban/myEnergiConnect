@@ -59,7 +59,7 @@ public class ManualConnectionTests
 
         var now = DateTime.Now;
 
-        var history = await client.GetZappiHistory(serialNumber, now.Year,now.Month, now.Day, FlowUnit.KiloWatt);
+        var history = await client.GetZappiHistory(serialNumber, now.Year,now.Month, now.Day, FlowUnit.KiloWattHour);
 
         history.MinuteValue.Should().HaveCountGreaterThan(0);
     }
@@ -68,14 +68,14 @@ public class ManualConnectionTests
     [Explicit("Manual Connection test")]
     public async Task CanGetEddiHistory()
     {
-        var client = new MyEnergiClient(_serialNumber, _apiKey);
+        IMyEnergiClient client = new MyEnergiClient(_serialNumber, _apiKey);
         var eddiHistory = await client.GetEddiSummaries();
         var serialNumber = eddiHistory.Eiddis.First().SerialNumber;
 
         var now = DateTime.Now;
 
-        var history = await client.GetEddiHistory(serialNumber, now.Year,now.Month, now.Day);
+        var history = await client.GetEddiHistory(serialNumber, now.Year,now.Month, now.Day, FlowUnit.KiloWattHour);
 
-        history.Should().HaveCountGreaterThan(0);
+        history.MinuteValue.Should().HaveCountGreaterThan(0);
     }
 }

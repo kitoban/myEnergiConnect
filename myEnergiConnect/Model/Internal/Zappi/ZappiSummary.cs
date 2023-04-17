@@ -1,4 +1,6 @@
-﻿using MyEnergiConnect.Model.Internal.Shared;
+﻿using MyEnergiConnect.Model.Internal.Eddi;
+using myEnergiConnect.Model.Internal.Shared;
+using MyEnergiConnect.Model.Internal.Shared;
 using Newtonsoft.Json;
 
 namespace MyEnergiConnect.Model.Internal.Zappi;
@@ -46,4 +48,4 @@ public record ZappiSummary(
     [property:JsonProperty("tbh")] int BoostHour,
     [property:JsonProperty("tbk")] int BoostKWh,
     [property:JsonProperty("tbm")] int BoostMinute
-);
+) : IMyEnergiProduct;
