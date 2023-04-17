@@ -43,7 +43,7 @@ public class MyEnergiClient : IMyEnergiClient
             .GetJsonAsync<AllEddiSummary>();
     }
 
-    public async Task<HistoricDay> GetZappiHistory(int serialNo, int year, int month, int day, FlowUnit flowUnit = FlowUnit.Joules)
+    public async Task<HistoricDay> GetZappiHistory(int serialNo, int year, int month, int day, FlowUnit flowUnit = FlowUnit.JouleSeconds)
     {
         var zappi = await GetZappiSummary(serialNo);
         var url = await ResolveServerAddress($"cgi-jday-Z{serialNo}-{year}-{month}-{day}");
@@ -73,7 +73,7 @@ public class MyEnergiClient : IMyEnergiClient
         
         return flowUnit switch
         {
-            FlowUnit.Joules => new HistoricMinute(
+            FlowUnit.JouleSeconds => new HistoricMinute(
                 dateTime,
                 gridJoules, 
                 zappiJoules,

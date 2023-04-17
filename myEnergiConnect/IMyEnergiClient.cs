@@ -9,6 +9,6 @@ public interface IMyEnergiClient
 {
     Task<AllZappiSummary> GetZappiSummaries();
     Task<AllEddiSummary> GetEddiSummaries();
-    Task<HistoricDay> GetZappiHistory(int serialNo, int year, int month, int day, FlowUnit flowUnit = FlowUnit.Joules);
+    Task<HistoricDay> GetZappiHistory(int serialNo, int year, int month, int day, FlowUnit flowUnit = FlowUnit.JouleSeconds);
     Task<MinuteHistory[]> GetEddiHistory(int serialNo, int year, int month, int day);
 }
