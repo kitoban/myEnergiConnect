@@ -1,4 +1,4 @@
-﻿namespace myEnergiConnect.Model.Internal.Shared;
+﻿namespace myEnergiConnect.Model.External.Shared;
 
 public interface IMyEnergiProduct
 {

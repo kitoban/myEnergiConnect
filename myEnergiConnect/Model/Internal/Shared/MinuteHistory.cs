@@ -2,15 +2,15 @@
 
 namespace MyEnergiConnect.Model.Internal.Shared;
 
-public record MinuteHistory(
+internal record MinuteHistory(
     [property:JsonProperty("min")] int Minute,
     [property:JsonProperty("hr")] int Hour,
     [property:JsonProperty("dom")] int DayOfMonth,
     [property:JsonProperty("mon")] int Month,
     [property:JsonProperty("yr")] int Year,
     [property:JsonProperty("dow")] string DayOfWeek,
-    [property:JsonProperty("imp")] int ImportedJoules,
-    [property:JsonProperty("exp")] int ExportedJoules,
+    [property:JsonProperty("imp")] int ImportedWattSeconds,
+    [property:JsonProperty("exp")] int ExportedWattSeconds,
     [property:JsonProperty("gen")] int NegativeGeneration,
     [property:JsonProperty("gep")] int PositiveGeneration,
     [property:JsonProperty("v1")] int Voltage,
@@ -21,6 +21,6 @@ public record MinuteHistory(
     [property:JsonProperty("pect1")] int PositiveEnergyCt1,
     [property:JsonProperty("pect2")] int PositiveEnergyCt2,
     [property:JsonProperty("pect3")] int PositiveEnergyCt3,
-    [property:JsonProperty("h1d")] int Phase1Joules,
-    [property:JsonProperty("h2d")] int Phase2Joules,
-    [property:JsonProperty("h3d")] int Phase3Joules);
+    [property:JsonProperty("h1d")] int Phase1WattSeconds,
+    [property:JsonProperty("h2d")] int Phase2WattSeconds,
+    [property:JsonProperty("h3d")] int Phase3WattSeconds);

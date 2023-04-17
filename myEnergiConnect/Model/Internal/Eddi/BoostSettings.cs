@@ -2,7 +2,7 @@
 
 namespace MyEnergiConnect.Model.Internal.Eddi;
 
-public record BoostSettings(
+internal record BoostSettings(
     [property:JsonProperty("slt")] int Slot,
     [property:JsonProperty("bsh")] int BoostStartHour,
     [property:JsonProperty("bsm")] int BoostStartMinute,
