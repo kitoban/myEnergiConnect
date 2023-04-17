@@ -82,7 +82,8 @@ public class MyEnergiClient : IMyEnergiClient
             rawData.Heater1Name,
             rawData.Heater2Name,
             rawData.ActiveHeater,
-            rawData.Priority);
+            rawData.Priority,
+            ConvertFromKilowattHour(rawData.TotalKWhTransferred, energyUnit));
     }
 
     private ZappiSumary ConvertZappiSummary(RawZappiSummary rawData, PowerUnits powerUnit, EnergyUnit energyUnit)
