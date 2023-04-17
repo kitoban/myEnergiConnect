@@ -36,4 +36,4 @@ public record EddiSummary(
     [property:JsonProperty("tp")] int TemperatureProbe1,
     [property:JsonProperty("tp2")] int TemperatureProbe2,
     [property:JsonProperty("vol")] int VoltageOut
-) : IMyEnergiProduct;
+) : IMyEnergiProductWithCt;

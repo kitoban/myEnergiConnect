@@ -48,4 +48,4 @@ public record ZappiSummary(
     [property:JsonProperty("tbh")] int BoostHour,
     [property:JsonProperty("tbk")] int BoostKWh,
     [property:JsonProperty("tbm")] int BoostMinute
-) : IMyEnergiProduct;
+) : IMyEnergiProductWithCt;
