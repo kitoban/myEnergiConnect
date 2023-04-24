@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Globalization;
+using System.Net;
 using Flurl;
 using Flurl.Http;
 using MyEnergiConnect.Exceptions;
@@ -67,7 +68,7 @@ public class MyEnergiClient : IMyEnergiClient
     {
         return new EddiSummary(
             rawData.SerialNumber,
-            DateTime.Parse($"{rawData.Date} {rawData.Time}"), 
+            DateTime.ParseExact($"{rawData.Date} {rawData.Time}", "d/M/yyy HH:mm:ss", CultureInfo.CurrentCulture), 
             rawData.Ct1Name,
             rawData.Ct2Name,
             rawData.Ct3Name,
@@ -91,7 +92,7 @@ public class MyEnergiClient : IMyEnergiClient
     {
         return new ZappiSumary(
             rawData.SerialNumber,
-            DateTime.Parse($"{rawData.Date} {rawData.Time}"), 
+            DateTime.ParseExact($"{rawData.Date} {rawData.Time}", "d/M/yyy HH:mm:ss", CultureInfo.CurrentCulture), 
             rawData.Ct1Name,
             rawData.Ct2Name,
             rawData.Ct3Name,
