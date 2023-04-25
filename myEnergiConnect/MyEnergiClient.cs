@@ -148,7 +148,7 @@ public class MyEnergiClient : IMyEnergiClient
         var history = await GetDayData(serialNo, url);
         
         return new HistoricDay(
-            new DateOnly(year, month, day),
+            new DateTime(year, month, day),
             zappi.Ct2Name,
             zappi.Ct3Name,
             zappi.Ct4Name,
@@ -248,7 +248,7 @@ public class MyEnergiClient : IMyEnergiClient
         var history = await GetDayData(serialNo, url);
         
         return new HistoricDay(
-            new DateOnly(year, month, day),
+            new DateTime(year, month, day),
             eddi.Ct2Name,
             eddi.Ct3Name,
             "None",
