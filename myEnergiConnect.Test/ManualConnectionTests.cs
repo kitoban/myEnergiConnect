@@ -60,7 +60,7 @@ public class ManualConnectionTests
 
         var now = DateTime.Now;
 
-        var history = await client.GetZappiHistory(serialNumber, now.Year,now.Month, now.Day, EnergyUnit.KiloWattHour);
+        var history = await client.GetZappiHistory(serialNumber, now.Year,now.Month, now.Day, PowerUnits.KiloWatt);
 
         history.MinuteValue.Should().HaveCountGreaterThan(0);
     }
@@ -75,7 +75,7 @@ public class ManualConnectionTests
 
         var now = DateTime.Now;
 
-        var history = await client.GetEddiHistory(serialNumber, now.Year,now.Month, now.Day, EnergyUnit.KiloWattHour);
+        var history = await client.GetEddiHistory(serialNumber, now.Year,now.Month, now.Day, PowerUnits.KiloWatt);
 
         history.MinuteValue.Should().HaveCountGreaterThan(0);
     }
