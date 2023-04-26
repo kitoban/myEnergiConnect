@@ -72,12 +72,12 @@ public class MyEnergiClient : IMyEnergiClient
             rawData.Ct1Name,
             rawData.Ct2Name,
             rawData.Ct3Name,
-            ConvertFromWatt(rawData.PhysicalCt1ValueWatts, unit),
-            ConvertFromWatt(rawData.PhysicalCt2ValueWatts, unit),
-            ConvertFromWatt(rawData.PhysicalCt3ValueWatts, unit),
-            ConvertFromWatt(rawData.GeneratedWatts, unit),
-            ConvertFromWatt(rawData.CurrentWattsFromGrid, unit),
-            ConvertFromWatt(rawData.DiversionAmountWatts, unit),
+            ConvertFromMyenergiCtValues(rawData.PhysicalCt1ValueWatts, unit),
+            ConvertFromMyenergiCtValues(rawData.PhysicalCt2ValueWatts, unit),
+            ConvertFromMyenergiCtValues(rawData.PhysicalCt3ValueWatts, unit),
+            ConvertFromMyenergiCtValues(rawData.GeneratedWatts, unit),
+            ConvertFromMyenergiCtValues(rawData.CurrentWattsFromGrid, unit),
+            ConvertFromMyenergiCtValues(rawData.DiversionAmountWatts, unit),
             rawData.Status,
             rawData.TemperatureProbe1,
             rawData.TemperatureProbe2,
@@ -96,12 +96,12 @@ public class MyEnergiClient : IMyEnergiClient
             rawData.Ct1Name,
             rawData.Ct2Name,
             rawData.Ct3Name,
-            ConvertFromWatt(rawData.PhysicalCt1ValueWatts, powerUnit),
-            ConvertFromWatt(rawData.PhysicalCt2ValueWatts, powerUnit),
-            ConvertFromWatt(rawData.PhysicalCt3ValueWatts, powerUnit),
-            ConvertFromWatt(rawData.GeneratedWatts, powerUnit),
-            ConvertFromWatt(rawData.WattsFromGrid, powerUnit),
-            ConvertFromWatt(rawData.DiversionAmountWatts, powerUnit),
+            ConvertFromMyenergiCtValues(rawData.PhysicalCt1ValueWatts, powerUnit),
+            ConvertFromMyenergiCtValues(rawData.PhysicalCt2ValueWatts, powerUnit),
+            ConvertFromMyenergiCtValues(rawData.PhysicalCt3ValueWatts, powerUnit),
+            ConvertFromMyenergiCtValues(rawData.GeneratedWatts, powerUnit),
+            ConvertFromMyenergiCtValues(rawData.WattsFromGrid, powerUnit),
+            ConvertFromMyenergiCtValues(rawData.DiversionAmountWatts, powerUnit),
             rawData.Priority,
             rawData.UnitStatus,
             ConvertFromKilowattHour(rawData.ChargeAddedKWh, energyUnit),
@@ -120,12 +120,12 @@ public class MyEnergiClient : IMyEnergiClient
             rawData.BoostMinute);
     }
 
-    private decimal ConvertFromWatt(int value, PowerUnits unit)
+    private decimal ConvertFromMyenergiCtValues(int value, PowerUnits unit)
     {
         return unit switch
         {
-            PowerUnits.Watt => value,
-            PowerUnits.KiloWatt => value.FromWattToKilowatt(),
+            PowerUnits.Watt => value / 60m,
+            PowerUnits.KiloWatt => (value / 60m) / 1000m,
             _ => throw new ArgumentOutOfRangeException(nameof(unit), unit, null)
         };
     }
@@ -141,7 +141,7 @@ public class MyEnergiClient : IMyEnergiClient
         };
     }
     
-    public async Task<HistoricDay> GetZappiHistory(int serialNo, int year, int month, int day, EnergyUnit unit = EnergyUnit.WattSecond)
+    public async Task<HistoricDay> GetZappiHistory(int serialNo, int year, int month, int day, PowerUnits powerUnit = PowerUnits.Watt)
     {
         var zappi = await GetZappiSummary(serialNo);
         var url = await ResolveServerAddress($"cgi-jday-Z{serialNo}-{year}-{month}-{day}");
@@ -152,11 +152,11 @@ public class MyEnergiClient : IMyEnergiClient
             zappi.Ct2Name,
             zappi.Ct3Name,
             zappi.Ct4Name,
-            unit,
-            history.Select(mh => ConvertHistoricData(mh, unit)).ToArray());
+            powerUnit,
+            history.Select(mh => ConvertHistoricData(mh, powerUnit)).ToArray());
     }
 
-    private HistoricMinute ConvertHistoricData(MinuteHistory mh, EnergyUnit energyUnit)
+    private HistoricMinute ConvertHistoricData(MinuteHistory mh, PowerUnits powerUnit)
     {
         var dateTime = DateTime.Parse($"{mh.Year}-{mh.Month:D2}-{mh.DayOfMonth:D2}T{mh.Hour:D2}:{mh.Minute:D2}:00Z");
 
@@ -169,23 +169,12 @@ public class MyEnergiClient : IMyEnergiClient
 
         return new HistoricMinute(
             dateTime,
-            gridWattSeconds,
-            zappiWattSeconds,
-            HandleUnitConversion(genWattSeconds, energyUnit),
-            HandleUnitConversion(ct1WattSeconds, energyUnit),
-            HandleUnitConversion(ct2WattSeconds, energyUnit),
-            HandleUnitConversion(ct3WattSeconds, energyUnit));
-    }
-
-    private decimal HandleUnitConversion(int value, EnergyUnit unit)
-    {
-        return unit switch
-        {
-            EnergyUnit.WattSecond => value,
-            EnergyUnit.WattMinute => value.FromWattSecondToToWattMinute(),
-            EnergyUnit.KiloWattHour => value.FromWattSecondToToKiloWattHours(),
-            _ => throw new ArgumentOutOfRangeException(nameof(unit), unit, null)
-        };
+            ConvertFromMyenergiCtValues(gridWattSeconds, powerUnit),
+            ConvertFromMyenergiCtValues(zappiWattSeconds, powerUnit),
+            ConvertFromMyenergiCtValues(genWattSeconds, powerUnit),
+            ConvertFromMyenergiCtValues(ct1WattSeconds, powerUnit),
+            ConvertFromMyenergiCtValues(ct2WattSeconds, powerUnit),
+            ConvertFromMyenergiCtValues(ct3WattSeconds, powerUnit));
     }
 
     private async Task<MinuteHistory[]> GetDayData(int serialNo, string url)
@@ -241,7 +230,7 @@ public class MyEnergiClient : IMyEnergiClient
         return eddi;
     }
 
-    public async Task<HistoricDay> GetEddiHistory(int serialNo, int year, int month, int day, EnergyUnit unit)
+    public async Task<HistoricDay> GetEddiHistory(int serialNo, int year, int month, int day, PowerUnits unit)
     {
         var eddi = await GetEddiSummary(serialNo);
         var url = await ResolveServerAddress($"cgi-jday-E{serialNo}-{year}-{month}-{day}");
